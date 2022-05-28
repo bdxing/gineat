@@ -1,4 +1,4 @@
-module gineat
+module github.com/bdxing/gineat
 
 go 1.17
 
