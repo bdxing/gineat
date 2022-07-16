@@ -2,7 +2,6 @@ package gineat
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type Engine struct {
@@ -10,10 +9,9 @@ type Engine struct {
 }
 
 // Auto 添加自动注册路由
-func (obj *Engine) Auto(c interface{}) {
+func (obj *Engine) Auto(httpMethod string, c interface{}) {
 	autoHandle(c, func(relativePath string, hf func(*gin.Context)) {
-		obj.Handle(http.MethodGet, relativePath, hf)
-		obj.Handle(http.MethodPost, relativePath, hf)
+		obj.Handle(httpMethod, relativePath, hf)
 	})
 }
 

@@ -2,6 +2,7 @@ package gineat
 
 import (
 	"fmt"
+	"github.com/bdxing/goutils"
 	"github.com/gin-gonic/gin"
 	"reflect"
 	"strings"
@@ -18,7 +19,7 @@ func autoHandle(c interface{}, handlerFuncCall func(string, func(*gin.Context)))
 	ct := reflect.Indirect(reflectVal).Type()
 
 	for i := 0; i < rt.NumMethod(); i++ {
-		if inStrSlice(rt.Method(i).Name, exceptMethod) {
+		if goutils.SliceInStr(rt.Method(i).Name, exceptMethod) {
 			continue
 		}
 
@@ -26,7 +27,7 @@ func autoHandle(c interface{}, handlerFuncCall func(string, func(*gin.Context)))
 
 			paths := strings.Split(ctx.FullPath(), "/")
 
-			methodName := underToHump(paths[len(paths)-1])
+			methodName := goutils.StrUnderToHump(paths[len(paths)-1])
 
 			nrt := reflect.New(ct)
 			nct := reflect.Indirect(nrt).Type()
@@ -38,7 +39,7 @@ func autoHandle(c interface{}, handlerFuncCall func(string, func(*gin.Context)))
 			nrt.MethodByName(methodName).Call([]reflect.Value{})
 		}
 
-		relativePath := fmt.Sprintf("/%s/%s", humpToUnder(ct.Name()), humpToUnder(rt.Method(i).Name))
+		relativePath := fmt.Sprintf("/%s/%s", goutils.StrHumpToUnder(ct.Name()), goutils.StrHumpToUnder(rt.Method(i).Name))
 
 		handlerFuncCall(relativePath, handlerFunc)
 	}

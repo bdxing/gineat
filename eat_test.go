@@ -1,6 +1,7 @@
 package gineat
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"testing"
 )
@@ -27,8 +28,10 @@ func TestEat(t *testing.T) {
 
 func TestGin(t *testing.T) {
 	r := gin.Default()
-	gin.SetMode(gin.ReleaseMode)
+	//gin.SetMode(gin.ReleaseMode)
 	r.GET("/ping", func(c *gin.Context) {
+		fmt.Println(c.GetHeader("uid"))
+		fmt.Println(c.GetHeader("rightLevel"))
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
